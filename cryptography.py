@@ -134,16 +134,4 @@ if condition == 2:
 
     print("\n\n")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+closetab = input("Press enter to close this tab ")
