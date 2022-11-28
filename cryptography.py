@@ -24,6 +24,35 @@ B2_B1 = np.array([[0, 0, 28], [1, 0, 0], [28, 1, 1]])
 
 # Now we are gonna define a couple of functions
 
+
+def invert(dimension, matrix):
+    inverse = np.zeros((n, n), dtype=Fraction)
+
+    for i in range(dimension):
+         # This fills the inverse matrix as the identity matrix and sets the value to divide each row
+        divideby = matrix[i][i]
+        inverse[i][i] = Fraction(1, 1)
+
+        for j in range(dimension):
+
+            # Now we turn each element of the diagnal into a 1
+            matrix[i][j] = Fraction(matrix[i][j], divideby)
+            inverse[i][j] = Fraction(inverse[i][j], divideby)
+
+            for k in range(dimension):
+
+                # And we operate til each element different from the one on the diagonal turns into 0
+                if k != i:
+                    tomultiply = matrix[k][i]
+                    for l in range(dimension):
+                        matrix[k][l] = matrix[k][l] - matrix[i][l]*tomultiply
+                        inverse[k][l] = inverse[k][l] - \
+                            inverse[i][l]*tomultiply
+
+
+
+
+
     # This is the most important function, as we are wokring in Z_29^3 we need, always,  the lenght of our index array to be a multiple of 3, now with this fuction, if necessary,  we fill the missing spaces
 
 def fill_missing_spaces(indexvector):
@@ -107,7 +136,7 @@ if condition == 1:
     
     index_to_string(B2_INDEXVECTOR, B2_STRINGVECTOR, ALPHABET)
 
-    #prettify(B1_STRINGVECTOR)
+    prettify(B1_STRINGVECTOR)
 
     print("\n\nThe message you typed was the following:", ''.join(B1_STRINGVECTOR))
     print("\n It can also be expressed as the following array:", B1_INDEXVECTOR)
@@ -125,7 +154,7 @@ if condition == 2:
     change_of_basis_process(B2_INDEXVECTOR, B1_B2, B1_INDEXVECTOR)
     index_to_string(B1_INDEXVECTOR, B1_STRINGVECTOR, ALPHABET)
 
-    #prettify(B1_STRINGVECTOR)
+    prettify(B1_STRINGVECTOR)
 
     print("\n\nThe message you typed was the following:", ''.join(B2_STRINGVECTOR))
     print("\n After a hard process of dencrypting your message, the resulting string of characters is the following:",
