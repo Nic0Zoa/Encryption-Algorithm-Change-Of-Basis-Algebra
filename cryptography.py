@@ -6,7 +6,6 @@ from fractions import Fraction
 ALPHABET = ['_', 'A', 'B', 'C', 'D', 'E',
             'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.']
 
-string = str(input("Enter the string to process: "))
 
 # We will use different arrays that are gonna change its state along the process, in order to keep code legible, we are gonna enumerate them all right below
 
@@ -17,39 +16,66 @@ B1_STRINGVECTOR = []
 B2_INDEXVECTOR = []
 B2_STRINGVECTOR = []
 
-# Right below you will find the two matrix that are gonna be used. The first one represent the matrix B1 to B2,in other words, our key. While the second matrix is the one we are going to use to encrypt our message
-
-B1_B2 = np.array([[0, 1, 0], [1, 1, 1], [28, 0, 0]])
-B2_B1 = np.array([[0, 0, 28], [1, 0, 0], [28, 1, 1]])
-
 # Now we are gonna define a couple of functions
 
+# We need a function in order to fill our matrix
+def fill_matrix(dimension, matrix):
+    for i in range(dimension):
+        for j in range(dimension):
+            value = Fraction(
+                input("Type the value of the Row: {}, Column: {}: ".format(i+1, j+1)))
 
+            if value % 1 != 0:
+                    print("\n We've detected the number you typed was a rational number, please type what is asked to you in the following gaps: ")
+                    numerator = int(input(" Type the numerator of your number: "))
+                    denominator = int(input(" Type the denominator of your number: "))
+                    print("")
+                    value = Fraction(numerator, denominator)
+
+        matrix[i][j] = value
+
+
+# For any matrix, this function inverts the given matrix in order to get the change of basis matrix one
 def invert(dimension, matrix):
-    inverse = np.zeros((n, n), dtype=Fraction)
+    temparrayoriginal = np.zeros(dimension, dtype=Fraction)
+    temparrayinverse = np.zeros(dimension, dtype=Fraction)
 
     for i in range(dimension):
-         # This fills the inverse matrix as the identity matrix and sets the value to divide each row
-        divideby = matrix[i][i]
         inverse[i][i] = Fraction(1, 1)
 
-        for j in range(dimension):
+    for i in range(dimension):
 
+        # Check if the element of the diagonal is different from 0, we don't wanna divide by 0
+        if matrix[i][i] == 0:
+            for k in range(dimension):
+                if matrix[k][i] != 0:
+                    for j in range(dimension):
+                        temparrayoriginal[j] = matrix[i][j]
+                        temparrayinverse[j] = inverse[i][j]
+
+                    for j in range(dimension):
+                        matrix[i][j] = matrix[k][j]
+                        matrix[k][j] = temparrayoriginal[j]
+                        inverse[i][j] = inverse[k][j]
+                        inverse[k][j] = temparrayinverse[j]
+                    break
+        print(temparrayinverse)
+        print(inverse)
+
+        divideby = matrix[i][i]
+
+        for j in range(dimension):
             # Now we turn each element of the diagnal into a 1
             matrix[i][j] = Fraction(matrix[i][j], divideby)
             inverse[i][j] = Fraction(inverse[i][j], divideby)
 
-            for k in range(dimension):
-
-                # And we operate til each element different from the one on the diagonal turns into 0
-                if k != i:
-                    tomultiply = matrix[k][i]
-                    for l in range(dimension):
-                        matrix[k][l] = matrix[k][l] - matrix[i][l]*tomultiply
-                        inverse[k][l] = inverse[k][l] - \
-                            inverse[i][l]*tomultiply
-
-
+        for k in range(dimension):
+            # And we operate til each element different from the one on the diagonal turns into 0
+            if k != i:
+                tomultiply = matrix[k][i]
+                for l in range(dimension):
+                    matrix[k][l] = matrix[k][l] - matrix[i][l]*tomultiply
+                    inverse[k][l] = inverse[k][l] - inverse[i][l]*tomultiply
 
 
 
@@ -121,6 +147,31 @@ def prettify(stringarray):
 
 # And we make our program interactive, we don't really need to explain this part
 
+print("Welcome. I hope you enjoy the program, take a sit and follow my instructions.")
+
+# First we wanna know the key to use for decrypt and encrypt our message, so we ask the user to type the size of the matrix, and each element of the matrix
+n = int(input("Type the size of the matrix (Just type the number of columns): "))
+
+# Of course we will need the inverse of this matrix, is our way to encrypt our message, so we define these two matrix.
+matrix = np.zeros((n, n), dtype=Fraction)
+inverse = np.zeros((n, n), dtype=Fraction)
+
+
+
+# Right below you will find the two matrix that are gonna be used. The first one represent the matrix B1 to B2,in other words, our key. While the second matrix is the one we are going to use to encrypt our message
+
+# And we call the method to fill the principal one
+
+B1_B2 = np.zeros((n, n), dtype= Fraction)
+B2_B1 = np.zeros((n, n), dtype= Fraction)
+
+fill_matrix(n, B1_B2)
+
+print("\n Congratulations, we're almost done. Now the final part")
+
+string = str(input("Enter the string to process: "))
+
+
 condition = int(input(
     "\n\nIs the string written in normal language or is it encrypted. \n\n If it's written in natural language, type '1' \n If it's encrypted type '2' \n\n Your answer here: "))
 
@@ -146,7 +197,7 @@ if condition == 1:
 
     print("\n\n")
 
-if condition == 2:
+elif condition == 2:
 
     string_to_index(string, B2_INDEXVECTOR, ALPHABET)
     fill_missing_spaces(B2_INDEXVECTOR)
