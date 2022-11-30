@@ -169,6 +169,10 @@ fill_matrix(n, B1_B2)
 
 print("\n Congratulations, we're almost done. Now the final part")
 
+
+# We are working on Z_29, but the inverse function doesn't give a fuck about that. It may be possible that we end up with a matrix full of fractions, and we got no idea of what a fraction is in a finite field. So above, we define a function that, given any number, turn that number into an element of the field.
+
+
 string = str(input("Enter the string to process: "))
 
 
