@@ -110,10 +110,11 @@ def invert(dimension, matrix, inverse):
 def fill_missing_spaces(dimension, indexvector):
 
     iterator = dimension - len(indexvector) % dimension
-
     if iterator != 0:
         for i in range(iterator):
             indexvector.append(0)
+        for i in range(dimension):
+            indexvector.pop()
 
 
     # This function takes every letter of a string and turns it into the number that it represents
@@ -221,7 +222,6 @@ while True:
     B1_STRINGVECTOR = []
     B2_INDEXVECTOR = []
     B2_STRINGVECTOR = []
-
     ENCRYPTEDVECTOR = []
 
     string = str(input("Enter the string to process: "))
@@ -239,16 +239,24 @@ while True:
 
         change_of_basis_process(n, B1_INDEXVECTOR, B2_B1, B2_INDEXVECTOR)
         change_of_basis_process(n, B1_INDEXVECTOR, inverse, ENCRYPTEDVECTOR)
+
         index_to_string(B2_INDEXVECTOR, B2_STRINGVECTOR, ALPHABET)
 
         prettify(B1_STRINGVECTOR)
+
+        for i in range(len(B2_INDEXVECTOR)):
+            value = ENCRYPTEDVECTOR[i]
+            valuenumerator = value.numerator
+            valuedenominator = value.denominator
+            value = valuenumerator/valuedenominator
+            ENCRYPTEDVECTOR[i] = round(value, 2)
+
 
         print("\n\nThe message you typed was the following:", ''.join(B1_STRINGVECTOR))
         print("\n It can also be expressed as the following array:", B1_INDEXVECTOR)
 
         print("\n After a hard process of encrypting your message, the resulting string of characters is the following:", ''.join(B2_STRINGVECTOR))
-        print("\n Good luck to everyone trying to decrypt this array: ", B2_INDEXVECTOR)
-        print(ENCRYPTEDVECTOR)
+        print("\n Good luck to everyone trying to decrypt this array: ", ENCRYPTEDVECTOR)
 
         print("\n\n")
 
