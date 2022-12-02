@@ -1,23 +1,23 @@
 # Change of Basis. Algebra 
 
-Given a certain matrix, this code encrypts and decrypts every message you can imagine.
+Let's encrypt something. This code works in an easy way. Given a certain matrix, that we call the key, you can encrypt and decrypt any message you want.
 
-There are certain conditions to keep in mind:
+There are some things to keep in mind for the process.
 
-1. There are 29 different characters, that contains the 27 traditional letters from the alphaber and two additional ones.
-    - The first addition is an undersocre *"_"* that represents a gap or a blank space.
-    - The second addition is our classic dot *"."*, you can use it whenever you wante
+1. All has to be written in uppercase
+2. If you want to add a gap between words, you have to write an underscore
 
-2. Every message you want to write has to be written in uppercase, while every gap you want to write has to be written with an undersocere
+Let's see an example.
+
+Suposse you want to encrypt the following message: *Good morning, I am Daniel*
+First, the program will ask you for the size of the matrix, and its elements. In other words, your key.
+
+Now, given the instructions described right above, the message will be turned in the following: *GOOD_MORNING._I_AM_DANIEL.*
+
+And that´s it, the program is very clear at each step, so we won´t explain that in this file.
 
 
-This is an example:
-- Suposse you want to encrypt *Good morning*
+P.S. 
+I add an exectuable file into the dist folder, this way you won't have to run it from a terminal. Just use the executable.
 
-The code will ask you for the string of characters you will use, given the two conditions mentioned before, you will have to write this string as it is showed right below:
-
-- *GOOD_MORNING*
-
-The rest is pure magic.
-
-Enjoy, I will try to keep updating this as new ideas comes to mynd. That's all for now
+That's all for now.
