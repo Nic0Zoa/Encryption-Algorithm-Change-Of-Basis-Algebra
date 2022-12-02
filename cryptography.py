@@ -1,4 +1,4 @@
-
+import os
 import numpy as np
 from fractions import Fraction
 
@@ -110,11 +110,9 @@ def invert(dimension, matrix, inverse):
 def fill_missing_spaces(dimension, indexvector):
 
     iterator = dimension - len(indexvector) % dimension
-    if iterator != 0:
+    if len(indexvector) % dimension != 0:
         for i in range(iterator):
             indexvector.append(0)
-        for i in range(dimension):
-            indexvector.pop()
 
 
     # This function takes every letter of a string and turns it into the number that it represents
@@ -224,6 +222,7 @@ while True:
     B2_STRINGVECTOR = []
     ENCRYPTEDVECTOR = []
 
+
     string = str(input("Enter the string to process: "))
 
 
@@ -276,4 +275,7 @@ while True:
         print("\n You can thank me later")
 
         print("\n\n")
+    
+    tocontinue = input("Press enter to continue")
+    os.system('cls')
 
